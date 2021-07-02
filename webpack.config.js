@@ -12,7 +12,7 @@ module.exports = {
     historyApiFallback: true,
   },
   // the app entry point is /src/index.js
-  entry: path.resolve(__dirname, "src", "index.js"),
+  entry: path.resolve(__dirname, "src", "index.tsx"),
   output: {
     // the output of the webpack build will be in /dist directory
     path: path.resolve(__dirname, "dist"),
@@ -20,20 +20,25 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/",
   },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
   module: {
     rules: [
       {
-        // for any file with a suffix of js or jsx
-        test: /\.js$/,
-        // ignore transpiling JavaScript from node_modules as it should be that state
-        exclude: /node_modules/,
-        // use the babel-loader for transpiling JavaScript to a suitable format
-        loader: "babel-loader",
-        options: {
-          // attach the presets to the loader (most projects use .babelrc file instead)
-          presets: ["@babel/preset-env", "@babel/preset-react"],
+        test: /\.(t|j)sx?$/,
+        use: {
+          loader: "ts-loader",
         },
+        exclude: /node_modules/,
       },
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "source-map-loader",
+      },
+
       {
         test: /\.svg$/,
         use: [
@@ -45,6 +50,7 @@ module.exports = {
       },
     ],
   },
+  devtool: "source-map",
   // add a custom index.html as the template
   plugins: [
     new HtmlWebpackPlugin({
