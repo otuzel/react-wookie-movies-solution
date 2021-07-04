@@ -4,7 +4,7 @@ export const MoviesContext = createContext(null);
 
 export const MoviesContextProvider = (props) => {
   const { children } = props;
-  const TOKEN = "Wookie2019";
+  const TOKEN = process.env.API_TOKEN;
 
   const [state, setState] = useState({
     error: null,

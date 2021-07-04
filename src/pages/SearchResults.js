@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const TOKEN = "Wookie2019";
+const TOKEN = process.env.API_TOKEN;
 
 const SearchResults = (props) => {
   const location = useLocation();
