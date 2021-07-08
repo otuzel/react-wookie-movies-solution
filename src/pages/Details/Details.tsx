@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Movie } from "../../types";
 
 import { useMovies } from "../../contexts/MoviesContext";
 
@@ -17,14 +18,18 @@ import {
 
 const Details = () => {
   const { slug } = useParams();
-  const [{ movies }] = useMovies();
+  const [{ movies }, { onFetchMovies }] = useMovies();
+  const [selected, setSelected] = useState<Movie | undefined>();
 
-  let selected;
   let releaseYear;
 
-  if (movies) {
-    selected = movies.find((movie) => movie.slug === slug);
-  }
+  useEffect(() => {
+    if (movies) {
+      setSelected(movies.find((movie) => movie.slug === slug));
+    } else {
+      onFetchMovies();
+    }
+  }, [movies]);
 
   if (selected) {
     releaseYear = new Date(selected.released_on).getFullYear();

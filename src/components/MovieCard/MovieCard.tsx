@@ -14,7 +14,7 @@ const MovieCard = (props: MovieProps) => {
 
   return (
     <$MovieCard>
-      <Link to={movie.slug}>
+      <Link to={`/${movie.slug}`}>
         <img src={movie.poster} />
       </Link>
     </$MovieCard>
