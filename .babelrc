@@ -1,5 +1,0 @@
-{
-  "presets": ["@babel/preset-env", "@babel/preset-react"],
-  // For async/await
-  "plugins": ["@babel/plugin-transform-runtime"]
-}

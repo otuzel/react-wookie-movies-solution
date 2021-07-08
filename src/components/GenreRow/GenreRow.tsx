@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { Movie } from "../../types";
+import MovieCard from "../MovieCard";
 
-import { $Movie, $Row, $RowMovies, $RowTitle } from "./styles";
+import { $Row, $RowMovies, $RowTitle } from "./styles";
 
 type GenreProps = {
   genreName: string;
@@ -18,11 +18,7 @@ const GenreRow = (props: GenreProps) => {
       <$RowTitle>{`${genreName} (${movies.length})`}</$RowTitle>
       <$RowMovies>
         {movies.map((movie) => (
-          <$Movie key={movie.slug}>
-            <Link to={movie.slug}>
-              <img src={movie.poster} />
-            </Link>
-          </$Movie>
+          <MovieCard key={movie.slug} movie={movie} />
         ))}
       </$RowMovies>
     </$Row>

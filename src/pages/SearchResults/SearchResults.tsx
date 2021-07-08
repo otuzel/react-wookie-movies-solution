@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Movie } from "../../types";
-
+import MovieCard from "../../components/MovieCard";
 import { useMovies } from "../../contexts/MoviesContext";
+
+import { $SearchResultContainer } from "./styles";
 
 const SearchResults = () => {
   const [{ error, loading, searchResults }, { onFetchMovies }] = useMovies();
@@ -28,11 +30,11 @@ const SearchResults = () => {
     return (
       <>
         <h1>Search results for "{searchQuery}"</h1>
-        {searchResults.map((movie: Movie) => (
-          <Link key={movie.slug} to={`/${movie.slug}`}>
-            <img src={movie.poster} />
-          </Link>
-        ))}
+        <$SearchResultContainer>
+          {searchResults.map((movie: Movie) => (
+            <MovieCard key={movie.slug} movie={movie} />
+          ))}
+        </$SearchResultContainer>
       </>
     );
   }

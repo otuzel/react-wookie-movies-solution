@@ -13,9 +13,5 @@ export const $RowTitle = styled.h2`
 export const $RowMovies = styled.div`
   display: flex;
   flex-direction: row;
-`;
-export const $Movie = styled.div`
-  & + & {
-    margin-left: 15px;
-  }
+  margin: 0 -10px;
 `;
