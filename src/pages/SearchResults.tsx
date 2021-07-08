@@ -6,7 +6,7 @@ import { Movie } from "../types";
 import { useMovies } from "../contexts/MoviesContext";
 
 const SearchResults = () => {
-  const [{ error, loading, movies }, { onFetchMovies }] = useMovies();
+  const [{ error, loading, searchResults }, { onFetchMovies }] = useMovies();
   const location = useLocation();
 
   const searchQuery =
@@ -24,11 +24,11 @@ const SearchResults = () => {
     throw error;
   }
 
-  if (movies) {
+  if (searchResults) {
     return (
       <>
         <h1>Search results for "{searchQuery}"</h1>
-        {movies.map((movie: Movie) => (
+        {searchResults.map((movie: Movie) => (
           <Link key={movie.slug} to={`/${movie.slug}`}>
             <img src={movie.poster} />
           </Link>

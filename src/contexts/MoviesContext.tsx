@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { Movie } from "../types";
 
 const API_TOKEN = process.env.API_TOKEN;
@@ -7,13 +7,15 @@ const API_URL = process.env.API_URL;
 enum ActionType {
   PENDING = "PENDING",
   REJECTED = "REJECTED",
-  RESOLVED = "RESOLVED",
+  FETCH_RESOLVED = "FETCH_RESOLVED",
+  SEARCH_RESOLVED = "SEARCH_RESOLVED",
 }
 
 type State = {
   error: Error | null;
   loading: Boolean;
   movies: Movie[] | null;
+  searchResults: Movie[] | null;
 };
 
 type Handlers = {
@@ -23,7 +25,8 @@ type Handlers = {
 type Action =
   | { type: ActionType.PENDING }
   | { type: ActionType.REJECTED; error: Error }
-  | { type: ActionType.RESOLVED; movies: Movie[] };
+  | { type: ActionType.FETCH_RESOLVED; movies: Movie[] }
+  | { type: ActionType.SEARCH_RESOLVED; movies: Movie[] };
 
 type ContextProps = [state: State, handlers: Handlers];
 
@@ -31,6 +34,7 @@ const initialState: State = {
   error: null,
   loading: false,
   movies: null,
+  searchResults: null,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -46,11 +50,17 @@ const reducer = (state: State, action: Action): State => {
         error: action.error,
         loading: false,
       };
-    case ActionType.RESOLVED:
+    case ActionType.FETCH_RESOLVED:
       return {
         ...state,
         loading: false,
         movies: action.movies,
+      };
+    case ActionType.SEARCH_RESOLVED:
+      return {
+        ...state,
+        loading: false,
+        searchResults: action.movies,
       };
     default:
       throw new Error();
@@ -69,7 +79,7 @@ export const MoviesContextProvider = (
 ): React.ReactElement => {
   const { children } = props;
 
-  const [{ error, loading, movies }, dispatch] = useReducer(
+  const [{ error, loading, movies, searchResults }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -94,8 +104,9 @@ export const MoviesContextProvider = (
         });
       } else {
         const { movies } = await response.json();
+
         dispatch({
-          type: ActionType.RESOLVED,
+          type: query ? ActionType.SEARCH_RESOLVED : ActionType.FETCH_RESOLVED,
           movies,
         });
       }
@@ -113,7 +124,7 @@ export const MoviesContextProvider = (
 
   return (
     <MoviesContext.Provider
-      value={[{ error, loading, movies }, { onFetchMovies }]}
+      value={[{ error, loading, movies, searchResults }, { onFetchMovies }]}
     >
       {children}
     </MoviesContext.Provider>

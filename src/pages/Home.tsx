@@ -9,7 +9,7 @@ const Home = () => {
   const [genres, setGenres] = useState<Genres>();
 
   const groupByGenres = (movies: Movie[]): Genres => {
-    const groups = movies.reduce((genres, movie) => {
+    const groups = movies.reduce<Genres>((genres, movie) => {
       movie.genres.forEach((genre) => {
         if (!genres.hasOwnProperty(genre)) {
           genres[genre] = [movie];

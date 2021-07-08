@@ -37,7 +37,7 @@ const $Description = styled.div``;
 
 const Details = () => {
   const { slug } = useParams();
-  const { movies } = useMovies();
+  const [{ movies }] = useMovies();
 
   let selected;
   let releaseYear;
