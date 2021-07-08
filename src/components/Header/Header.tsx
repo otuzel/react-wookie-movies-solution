@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import Search from "./Search";
+import SearchBox from "../SearchBox";
 
 const $Header = styled.div`
   border-bottom: 2px solid #1a1d21;
@@ -30,7 +30,7 @@ const Header = () => {
           MOVIES
         </Link>
       </$Logo>
-      <Search />
+      <SearchBox />
     </$Header>
   );
 };

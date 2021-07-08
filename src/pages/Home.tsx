@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Genres, Movie } from "../types";
 
-import { MoviesContext } from "../contexts/MoviesContext";
+import { useMovies } from "../contexts/MoviesContext";
 import GenreRow from "../components/GenreRow";
 
 const Home = () => {
-  const { loading, movies } = useContext(MoviesContext);
-  const [genres, setGenres] = useState();
+  const [{ loading, movies }, { onFetchMovies }] = useMovies();
+  const [genres, setGenres] = useState<Genres>();
 
-  const groupByGenres = (movies) => {
+  const groupByGenres = (movies: Movie[]): Genres => {
     const groups = movies.reduce((genres, movie) => {
       movie.genres.forEach((genre) => {
         if (!genres.hasOwnProperty(genre)) {
@@ -23,7 +24,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (movies) {
+    if (!movies) {
+      onFetchMovies();
+    } else {
       const genres = groupByGenres(movies);
       setGenres(genres);
     }

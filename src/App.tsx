@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
 import { MoviesContextProvider } from "./contexts/MoviesContext";
-import ErrorBoundary from "./components/ErrorBoundary";
-import Header from "./components/Header";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Header from "./components/Header/Header";
 import NotFound from "./components/NotFound";
 import Details from "./pages/Details";
 import Home from "./pages/Home";

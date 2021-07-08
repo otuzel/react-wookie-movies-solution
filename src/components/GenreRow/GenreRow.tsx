@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { Movie } from "../../types";
+
 const $Row = styled.div`
   margin-bottom: 30px;
   overflow-x: auto;
@@ -22,7 +24,12 @@ const $Movie = styled.div`
   }
 `;
 
-const GenreRow = (props) => {
+type GenreProps = {
+  genreName: string;
+  movies: Movie[];
+};
+
+const GenreRow = (props: GenreProps) => {
   const { movies, genreName } = props;
 
   return (

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 
-import { MoviesContext } from "../contexts/MoviesContext";
+import { useMovies } from "../contexts/MoviesContext";
 
 const $Wrapper = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const $Description = styled.div``;
 
 const Details = () => {
   const { slug } = useParams();
-  const { movies } = useContext(MoviesContext);
+  const { movies } = useMovies();
 
   let selected;
   let releaseYear;

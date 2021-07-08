@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import SearchIcon from "../icons/search-line.svg";
+import SearchIcon from "../../icons/search-line.svg";
 
 const $Search = styled.div`
   display: flex;
@@ -19,17 +19,17 @@ const $SearchInput = styled.input`
   height: 25px;
 `;
 
-const Search = () => {
+const SearchBox = () => {
   const [term, setTerm] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      navigate(`/search?term=${term}`);
+      navigate(`/search?q=${term}`);
     }
   };
 
@@ -48,4 +48,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchBox;

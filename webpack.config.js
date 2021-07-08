@@ -2,8 +2,6 @@ const Dotenv = require("dotenv-webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-console.log("------------------->>>>>>", process.env.API_URL);
-
 module.exports = {
   // the output bundle won't be optimized for production but suitable for development
   mode: "development",
