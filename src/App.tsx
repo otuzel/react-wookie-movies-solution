@@ -6,9 +6,9 @@ import { MoviesContextProvider } from "./contexts/MoviesContext";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import Header from "./components/Header/Header";
 import NotFound from "./components/NotFound";
-import Details from "./pages/Details";
-import Home from "./pages/Home";
-import SearchResults from "./pages/SearchResults";
+import Details from "./pages/Details/Details";
+import Home from "./pages/Home/Home";
+import SearchResults from "./pages/SearchResults/SearchResults";
 
 const GlobalStyle = createGlobalStyle`
 *, *:before, *:after {
@@ -26,6 +26,8 @@ body {
 
 const $Page = styled.div`
   padding: 40px 20px;
+  max-width: 1280px;
+  margin: 0 auto;
 `;
 
 const App = () => {
