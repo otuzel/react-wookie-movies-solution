@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { Movie } from "../../types";
 
 import { useMovies } from "../../contexts/MoviesContext";
+import Rating from "../../components/Rating";
 
 import {
   $Wrapper,
@@ -12,7 +13,6 @@ import {
   $TitleWrapper,
   $Title,
   $Metadata,
-  $Score,
   $Description,
 } from "./styles";
 
@@ -50,7 +50,7 @@ const Details = () => {
               Cast: {selected.cast.join(", ")}
             </$Metadata>
           </$TitleWrapper>
-          <$Score>IMDB Score: {selected.imdb_rating}</$Score>
+          <Rating score={selected.imdb_rating} />
         </$Header>
         <$Description>{selected.overview}</$Description>
       </$MovieDetails>

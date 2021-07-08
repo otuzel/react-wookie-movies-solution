@@ -25,8 +25,4 @@ export const $Metadata = styled.div`
   margin-bottom: 20px;
 `;
 
-export const $Score = styled.div`
-  margin-left: auto;
-`;
-
 export const $Description = styled.div``;
