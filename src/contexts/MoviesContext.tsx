@@ -67,7 +67,7 @@ const MoviesContext = createContext<ContextProps>([{} as State, () => {}]);
 
 export const useMovies = () => useContext(MoviesContext);
 
-export const MoviesContextProvider = (
+export const MoviesProvider = (
   props: React.PropsWithChildren<{}>
 ): React.ReactElement => {
   const { children } = props;
