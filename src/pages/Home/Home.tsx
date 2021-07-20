@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Genres, Movie } from "../../types";
 
-import { useMovies } from "../../contexts/MoviesContext";
+import { useMovies, onFetchMovies } from "../../contexts/MoviesContext";
 import GenreRow from "../../components/GenreRow";
 
 const Home = () => {
-  const [{ loading, movies }, { onFetchMovies }] = useMovies();
+  const [{ loading, movies }, dispatch] = useMovies();
   const [genres, setGenres] = useState<Genres>();
 
   const groupByGenres = (movies: Movie[]): Genres => {
@@ -25,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!movies) {
-      onFetchMovies();
+      onFetchMovies(dispatch);
     } else {
       const genres = groupByGenres(movies);
       setGenres(genres);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Movie } from "../../types";
 
-import { useMovies } from "../../contexts/MoviesContext";
+import { useMovies, onFetchMovies } from "../../contexts/MoviesContext";
 import Rating from "../../components/Rating";
 
 import {
@@ -18,7 +18,7 @@ import {
 
 const Details = () => {
   const { slug } = useParams();
-  const [{ movies }, { onFetchMovies }] = useMovies();
+  const [{ movies }, dispatch] = useMovies();
   const [selected, setSelected] = useState<Movie | undefined>();
 
   let releaseYear;
@@ -27,7 +27,7 @@ const Details = () => {
     if (movies) {
       setSelected(movies.find((movie) => movie.slug === slug));
     } else {
-      onFetchMovies();
+      onFetchMovies(dispatch);
     }
   }, [movies]);
 

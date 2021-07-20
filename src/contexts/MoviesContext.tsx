@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import { Movie } from "../types";
 
 const API_TOKEN = process.env.API_TOKEN;
@@ -18,17 +18,13 @@ type State = {
   searchResults: Movie[] | null;
 };
 
-type Handlers = {
-  onFetchMovies: (query?: string) => void;
-};
-
 type Action =
   | { type: ActionType.PENDING }
   | { type: ActionType.REJECTED; error: Error }
   | { type: ActionType.FETCH_RESOLVED; movies: Movie[] }
   | { type: ActionType.SEARCH_RESOLVED; movies: Movie[] };
 
-type ContextProps = [state: State, handlers: Handlers];
+type ContextProps = [state: State, dispatch: React.Dispatch<Action>];
 
 const initialState: State = {
   error: null,
@@ -67,10 +63,7 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const MoviesContext = createContext<ContextProps>([
-  {} as State,
-  {} as Handlers,
-]);
+const MoviesContext = createContext<ContextProps>([{} as State, () => {}]);
 
 export const useMovies = () => useContext(MoviesContext);
 
@@ -79,54 +72,53 @@ export const MoviesContextProvider = (
 ): React.ReactElement => {
   const { children } = props;
 
-  const [{ error, loading, movies, searchResults }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
-
-  const onFetchMovies = async (query?: string) => {
-    dispatch({ type: ActionType.PENDING });
-
-    const baseUrl = `${API_URL}/movies`;
-    const url = query ? `${baseUrl}?q=${query}` : baseUrl;
-
-    try {
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
-        },
-      });
-
-      if (!response.ok) {
-        dispatch({
-          type: ActionType.REJECTED,
-          error: new Error(response.status.toString()),
-        });
-      } else {
-        const { movies } = await response.json();
-
-        dispatch({
-          type: query ? ActionType.SEARCH_RESOLVED : ActionType.FETCH_RESOLVED,
-          movies,
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: ActionType.REJECTED,
-        error,
-      });
-    }
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { error } = state;
 
   if (error) {
     throw error;
   }
 
   return (
-    <MoviesContext.Provider
-      value={[{ error, loading, movies, searchResults }, { onFetchMovies }]}
-    >
+    <MoviesContext.Provider value={[state, dispatch]}>
       {children}
     </MoviesContext.Provider>
   );
+};
+
+export const onFetchMovies = async (
+  dispatch: React.Dispatch<Action>,
+  query?: string
+) => {
+  dispatch({ type: ActionType.PENDING });
+
+  const baseUrl = `${API_URL}/movies`;
+  const url = query ? `${baseUrl}?q=${query}` : baseUrl;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      dispatch({
+        type: ActionType.REJECTED,
+        error: new Error(response.status.toString()),
+      });
+    } else {
+      const { movies } = await response.json();
+
+      dispatch({
+        type: query ? ActionType.SEARCH_RESOLVED : ActionType.FETCH_RESOLVED,
+        movies,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: ActionType.REJECTED,
+      error,
+    });
+  }
 };
